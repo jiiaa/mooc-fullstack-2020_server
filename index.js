@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const morgan = require('morgan');
 
 morgan.token('body', function(req, res) {
@@ -17,6 +18,7 @@ const unknownEndpoint = (req, res) => {
     res.status(404).send({ error: 'Unknown endpoint'});
 }
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan(morganOutput));
 
@@ -73,9 +75,10 @@ app.get('/info', (req, res) => {
 app.use(unknownEndpoint);
 
 
-const port = 3001;
-app.listen(port);
-console.log(`Now listening to port ${port}`);
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`Now listening at port ${PORT}`);
+});
 
 let persons = [
     {

@@ -43,7 +43,7 @@ app.get('/api/persons/:id', (req, res, next) => {
         .catch(error => next(error))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body;
     
     if (!body.name || !body.number) {
@@ -113,6 +113,8 @@ const handleError = (error, req, res, next) => {
 
     if (error.name === 'CastError') {
         return res.status(400).send({ error: 'Bad ID format' })
+    } else if (error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message })
     }
     next(error);
 }
@@ -124,30 +126,3 @@ app.listen(PORT, () => {
     console.log(`Now listening at port ${PORT}`);
 });
 
-let persons = [
-    {
-        name: "Aku Ankka",
-        number: "313",
-        id: 1
-    },
-    {
-        name: "Roope Ankka",
-        number: "$$$$",
-        id: 2
-    },
-    {
-        name: "Mary Poppendieck",
-        number: "1-250-462 6598",
-        id: 3
-    },
-    {
-        name: "Corona Virus",
-        number: "777-999",
-        id: 4
-    },
-    {
-        name: "Nalle Puh",
-        number: "Hunajata",
-        id: 5
-    }
-];

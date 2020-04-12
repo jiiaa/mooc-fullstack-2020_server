@@ -5,12 +5,12 @@ const dbUrl = process.env.MONGO_URI;
 
 console.log('Connecting to ', dbUrl);
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-    .then(result => {
+    .then(() => {
         console.log('Connected to MongoDB');
     })
-    .catch((error) =>{
+    .catch((error) => {
         console.log('Error connecting to MongoDB: ', error.message);
-    })
+    });
 
 const personSchema = new mongoose.Schema({
     name: {
@@ -24,7 +24,7 @@ const personSchema = new mongoose.Schema({
         minlength: 8,
         required: true
     }
-})
+});
 
 personSchema.plugin(uniqueValidator);
 
@@ -34,6 +34,6 @@ personSchema.set('toJSON', {
         delete returnedObject._id;
         delete returnedObject.__v;
     }
-})
+});
 
 module.exports = mongoose.model('Person', personSchema);
